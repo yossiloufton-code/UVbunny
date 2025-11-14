@@ -7,6 +7,7 @@ import { ConfigService } from '../../services/config.service';
 import { Bunny } from '../../models/bunny';
 import { GlobalConfig } from '../../models/global-config';
 import { combineLatest, map, Observable } from 'rxjs';
+import { ToastService } from '../../services/toast.service';
 
 interface BunnyView {
   bunny: Bunny;
@@ -33,7 +34,8 @@ export class BunnyDashboard {
   constructor(
     private bunnyService: BunnyService,
     private configService: ConfigService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService
   ) {
     this.vm$ = combineLatest([
       this.bunnyService.getBunnies(),
@@ -59,11 +61,20 @@ export class BunnyDashboard {
     );
   }
 
-  addBunny() {
+  async addBunny() {
     const name = this.newBunnyName.trim();
     if (!name) return;
-    void this.bunnyService.addBunny(name);
-    this.newBunnyName = '';
+
+    try {
+      const ref = await this.bunnyService.addBunny(name);
+      this.newBunnyName = '';
+
+      this.toast.success(`Bunny "${name}" added 🐰`);
+      await this.router.navigate(['/bunnies', ref.id]);
+    } catch (err) {
+      console.error(err);
+      this.toast.error('Failed to add bunny');
+    }
   }
 
   openDetails(id: string) {

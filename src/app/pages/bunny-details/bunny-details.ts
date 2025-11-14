@@ -6,6 +6,7 @@ import { ConfigService } from '../../services/config.service';
 import { combineLatest, map, Observable } from 'rxjs';
 import { Bunny } from '../../models/bunny';
 import { GlobalConfig } from '../../models/global-config';
+import { ToastService } from '../../services/toast.service';
 
 interface DetailsVM {
   bunny: Bunny;
@@ -27,7 +28,8 @@ export class BunnyDetails {
   constructor(
     private route: ActivatedRoute,
     private bunnyService: BunnyService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private toast: ToastService
   ) {
     this.bunnyId = this.route.snapshot.paramMap.get('id')!;
 
@@ -45,7 +47,13 @@ export class BunnyDetails {
     );
   }
 
-  giveCarrot() {
-    void this.bunnyService.giveCarrot(this.bunnyId, 1);
+  async giveCarrot() {
+    try {
+      await this.bunnyService.giveCarrot(this.bunnyId, 1);
+      this.toast.success('You gave your bunny a carrot! 🥕');
+    } catch (err) {
+      console.error(err);
+      this.toast.error('Failed to give carrot');
+    }
   }
 }

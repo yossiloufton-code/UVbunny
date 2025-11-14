@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ConfigService } from '../../services/config.service';
 import { GlobalConfig } from '../../models/global-config';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-config',
@@ -16,7 +18,11 @@ export class Config implements OnInit {
   config$!: Observable<GlobalConfig>;
   currentValue = 3;
 
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private router: Router,
+    private toast: ToastService
+  ) { }
 
   ngOnInit() {
     this.config$ = this.configService.getConfig();
@@ -28,7 +34,14 @@ export class Config implements OnInit {
     });
   }
 
-  onSave() {
-    void this.configService.updatePointsPerCarrot(this.currentValue);
+  async onSave() {
+    try {
+      await this.configService.updatePointsPerCarrot(this.currentValue);
+      this.toast.success('Updated points per carrot');
+      await this.router.navigate(['/bunnies']);
+    } catch (err) {
+      console.error(err);
+      this.toast.error('Failed to update configuration');
+    }
   }
 }
