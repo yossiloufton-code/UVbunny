@@ -1,18 +1,40 @@
 <div *ngIf="vm$ | async as vm">
-  <section class="summary">
-    <div>
+  <section class="summary-card">
+    <div class="summary-card__left">
       <h2>Your bunny family</h2>
-      <p>
-        Average happiness:
-        <strong>{{ vm.averageHappiness | number:'1.0-1' }}</strong>
-      </p>
-      <p>Points per carrot: {{ vm.config.pointsPerCarrot }}</p>
+      <div class="summary-stats">
+        <div class="stat">
+          <span class="stat-label">Average happiness</span>
+          <span class="stat-value">
+            {{ vm.averageHappiness | number:'1.0-1' }}
+          </span>
+        </div>
+
+        <div class="stat">
+          <span class="stat-label">Points per carrot</span>
+          <span class="stat-value">
+            {{ vm.config.pointsPerCarrot }}
+          </span>
+        </div>
+
+        <div class="stat">
+          <span class="stat-label">Total bunnies</span>
+          <span class="stat-value">
+            {{ vm.bunnies.length }}
+          </span>
+        </div>
+      </div>
     </div>
 
     <form (ngSubmit)="addBunny()" class="add-form">
-      <label>
-        Add new bunny:
-        <input type="text" [(ngModel)]="newBunnyName" name="bunnyName" />
+      <label class="add-form__label">
+        Add new bunny
+        <input
+          type="text"
+          [(ngModel)]="newBunnyName"
+          name="bunnyName"
+          placeholder="e.g. Fluffy"
+        />
       </label>
       <button type="submit">Add</button>
     </form>
@@ -25,14 +47,25 @@
         *ngFor="let item of vm.bunnies"
         (click)="openDetails(item.bunny.id)"
       >
-        <h3>{{ item.bunny.name }}</h3>
-        <p>Happiness: {{ item.happiness }}</p>
-        <p>Carrots: {{ item.bunny.carrots }}</p>
+        <div class="bunny-card__header">
+          <h3>{{ item.bunny.name }}</h3>
+        </div>
+
+        <div class="bunny-card__body">
+          <p><span class="label">Happiness:</span> {{ item.happiness }}</p>
+          <p><span class="label">Carrots:</span> {{ item.bunny.carrots }}</p>
+        </div>
+
+        <div class="bunny-card__footer">
+          <span class="link">View details →</span>
+        </div>
       </div>
     </ng-container>
 
     <ng-template #noBunnies>
-      <p>No bunnies yet. Add your first bunny! 🐰</p>
+      <p class="empty-state">
+        No bunnies yet. Add your first bunny and start spreading happiness! 🐰
+      </p>
     </ng-template>
   </section>
 </div>
