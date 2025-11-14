@@ -1,13 +1,63 @@
-<div *ngIf="vm$ | async as vm" class="details">
-  <h2>{{ vm.bunny.name }}</h2>
+<ng-container *ngIf="vm$ | async as vm; else loading">
+  <div class="details-card">
+    <header class="details-card__header">
+      <div>
+        <h2>{{ vm.bunny.name }}</h2>
+        <p class="subtitle">Adopted bunny, living its best life 🐰</p>
+      </div>
 
-  <p>
-    Carrots eaten: <strong>{{ vm.bunny.carrots }}</strong><br />
-    Points per carrot: {{ vm.config.pointsPerCarrot }}<br />
-    Happiness: <strong>{{ vm.happiness }}</strong>
-  </p>
+      <button class="danger" (click)="deleteBunny()">Delete bunny</button>
+    </header>
 
-  <button (click)="giveCarrot()">
-    Give carrot 🥕 (+{{ vm.config.pointsPerCarrot }} happiness)
-  </button>
-</div>
+    <section class="details-grid">
+      <div class="stat-block">
+        <span class="label">Carrots eaten</span>
+        <span class="value">{{ vm.bunny.carrots }}</span>
+      </div>
+
+      <div class="stat-block">
+        <span class="label">Points per carrot</span>
+        <span class="value">{{ vm.config.pointsPerCarrot }}</span>
+      </div>
+
+      <div class="stat-block">
+        <span class="label">Happiness</span>
+        <span class="value highlight">{{ vm.happiness }}</span>
+      </div>
+    </section>
+
+    <section class="actions">
+      <button class="primary" (click)="giveCarrot()">
+        Give carrot 🥕 (+{{ vm.config.pointsPerCarrot }} happiness)
+      </button>
+    </section>
+
+    <section class="history">
+      <h3>Carrot history</h3>
+
+      <p *ngIf="!vm.events.length" class="empty-history">
+        No carrots given yet. Show your bunny some love! 🥕
+      </p>
+
+      <ul *ngIf="vm.events.length" class="history-list">
+        <li *ngFor="let ev of vm.events">
+          <span class="dot"></span>
+          <div>
+            <div class="history-title">
+              {{ ev.amount }} carrot{{ ev.amount > 1 ? 's' : '' }} given
+            </div>
+            <div class="history-meta">
+              {{ ev.createdAt?.toDate() | date : 'medium' }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</ng-container>
+
+<ng-template #loading>
+  <div class="details-loading">
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+  </div>
+</ng-template>

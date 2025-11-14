@@ -1,4 +1,4 @@
-<div *ngIf="vm$ | async as vm">
+<ng-container *ngIf="vm$ | async as vm; else loading">
   <section class="summary-card">
     <div class="summary-card__left">
       <h2>Your bunny family</h2>
@@ -6,7 +6,7 @@
         <div class="stat">
           <span class="stat-label">Average happiness</span>
           <span class="stat-value">
-            {{ vm.averageHappiness | number:'1.0-1' }}
+            {{ vm.averageHappiness | number: '1.0-1' }}
           </span>
         </div>
 
@@ -29,12 +29,7 @@
     <form (ngSubmit)="addBunny()" class="add-form">
       <label class="add-form__label">
         Add new bunny
-        <input
-          type="text"
-          [(ngModel)]="newBunnyName"
-          name="bunnyName"
-          placeholder="e.g. Fluffy"
-        />
+        <input type="text" [(ngModel)]="newBunnyName" name="bunnyName" placeholder="e.g. Fluffy" />
       </label>
       <button type="submit">Add</button>
     </form>
@@ -42,11 +37,7 @@
 
   <section class="bunny-grid">
     <ng-container *ngIf="vm.bunnies.length; else noBunnies">
-      <div
-        class="bunny-card"
-        *ngFor="let item of vm.bunnies"
-        (click)="openDetails(item.bunny.id)"
-      >
+      <div class="bunny-card" *ngFor="let item of vm.bunnies" (click)="openDetails(item.bunny.id)">
         <div class="bunny-card__header">
           <h3>{{ item.bunny.name }}</h3>
         </div>
@@ -68,4 +59,10 @@
       </p>
     </ng-template>
   </section>
-</div>
+</ng-container>
+
+<ng-template #loading>
+  <div class="dashboard-loading">
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+  </div>
+</ng-template>

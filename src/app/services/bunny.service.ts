@@ -8,9 +8,13 @@ import {
   docData,
   updateDoc,
   increment,
+  deleteDoc,
+  query,
+  orderBy,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Bunny } from '../models/bunny';
+import { BunnyEvent } from '../models/bunny-event';
 
 @Injectable({ providedIn: 'root' })
 export class BunnyService {
@@ -19,6 +23,8 @@ export class BunnyService {
   constructor(private firestore: Firestore) {
     this.bunniesCol = collection(this.firestore, 'bunnies');
   }
+
+  // --- bunnies ---
 
   getBunnies(): Observable<Bunny[]> {
     return collectionData(this.bunniesCol, { idField: 'id' }) as Observable<Bunny[]>;
@@ -37,8 +43,35 @@ export class BunnyService {
     });
   }
 
-  giveCarrot(id: string, amount = 1) {
+  async deleteBunny(id: string) {
     const ref = doc(this.firestore, 'bunnies', id);
-    return updateDoc(ref, { carrots: increment(amount) });
+    // NOTE: events subcollection will remain; for this assignment that's OK.
+    await deleteDoc(ref);
+  }
+
+  // --- events ---
+
+  private bunnyEventsCol(bunnyId: string) {
+    return collection(this.firestore, `bunnies/${bunnyId}/events`);
+  }
+
+  getEventsForBunny(bunnyId: string): Observable<BunnyEvent[]> {
+    const q = query(this.bunnyEventsCol(bunnyId), orderBy('createdAt', 'desc'));
+    return collectionData(q, { idField: 'id' }) as Observable<BunnyEvent[]>;
+  }
+
+  async giveCarrot(id: string, amount = 1) {
+    const bunnyRef = doc(this.firestore, 'bunnies', id);
+    const eventsCol = this.bunnyEventsCol(id);
+
+    // record event + increment carrots
+    await Promise.all([
+      addDoc(eventsCol, {
+        type: 'CARROT_GIVEN',
+        amount,
+        createdAt: new Date(),
+      }),
+      updateDoc(bunnyRef, { carrots: increment(amount) }),
+    ]);
   }
 }

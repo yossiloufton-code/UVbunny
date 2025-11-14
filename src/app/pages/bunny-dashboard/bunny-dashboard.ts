@@ -8,6 +8,7 @@ import { Bunny } from '../../models/bunny';
 import { GlobalConfig } from '../../models/global-config';
 import { combineLatest, map, Observable } from 'rxjs';
 import { ToastService } from '../../services/toast.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 interface BunnyView {
   bunny: Bunny;
@@ -23,7 +24,7 @@ interface DashboardVM {
 @Component({
   selector: 'app-bunny-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, MatProgressSpinnerModule],
   templateUrl: './bunny-dashboard.html',
   styleUrl: './bunny-dashboard.scss',
 })
