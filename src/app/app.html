@@ -1,11 +1,20 @@
 <header class="app-header">
-  <h1>UVbunny 🐰</h1>
-  <nav>
-    <a routerLink="/bunnies" routerLinkActive="active">Bunnies</a>
-    <a routerLink="/config" routerLinkActive="active">Config</a>
+  <div class="app-header__left">
+    <span class="app-logo">UVbunny 🐰</span>
+  </div>
+
+  <nav class="app-header__nav">
+    <a routerLink="/bunnies" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Bunnies
+    </a>
+    <a routerLink="/config" routerLinkActive="active">
+      Config
+    </a>
   </nav>
 </header>
 
 <main class="app-main">
-  <router-outlet />
+  <div class="page-container">
+    <router-outlet />
+  </div>
 </main>

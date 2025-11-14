@@ -2,7 +2,10 @@
   <section class="summary">
     <div>
       <h2>Your bunny family</h2>
-      <p>Average happiness: <strong>{{ vm.averageHappiness | number:'1.0-1' }}</strong></p>
+      <p>
+        Average happiness:
+        <strong>{{ vm.averageHappiness | number:'1.0-1' }}</strong>
+      </p>
       <p>Points per carrot: {{ vm.config.pointsPerCarrot }}</p>
     </div>
 
@@ -16,16 +19,20 @@
   </section>
 
   <section class="bunny-grid">
-    <div
-      class="bunny-card"
-      *ngFor="let item of vm.bunnies"
-      (click)="openDetails(item.bunny.id)"
-    >
-      <h3>{{ item.bunny.name }}</h3>
-      <p>Happiness: {{ item.happiness }}</p>
-      <p>Carrots: {{ item.bunny.carrots }}</p>
-    </div>
+    <ng-container *ngIf="vm.bunnies.length; else noBunnies">
+      <div
+        class="bunny-card"
+        *ngFor="let item of vm.bunnies"
+        (click)="openDetails(item.bunny.id)"
+      >
+        <h3>{{ item.bunny.name }}</h3>
+        <p>Happiness: {{ item.happiness }}</p>
+        <p>Carrots: {{ item.bunny.carrots }}</p>
+      </div>
+    </ng-container>
 
-    <p *ngIf="!vm.bunnies.length">No bunnies yet. Add your first bunny! 🐰</p>
+    <ng-template #noBunnies>
+      <p>No bunnies yet. Add your first bunny! 🐰</p>
+    </ng-template>
   </section>
 </div>

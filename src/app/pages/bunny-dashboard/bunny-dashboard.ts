@@ -26,7 +26,7 @@ interface DashboardVM {
   templateUrl: './bunny-dashboard.html',
   styleUrl: './bunny-dashboard.scss',
 })
-export class BunnyDashboardComponent {
+export class BunnyDashboard {
   vm$: Observable<DashboardVM>;
   newBunnyName = '';
 
@@ -40,9 +40,11 @@ export class BunnyDashboardComponent {
       this.configService.getConfig(),
     ]).pipe(
       map(([bunnies, config]) => {
+        const safeConfig: GlobalConfig = config ?? { pointsPerCarrot: 3 };
+
         const bunnyViews: BunnyView[] = bunnies.map(b => ({
           bunny: b,
-          happiness: (b.carrots ?? 0) * (config.pointsPerCarrot ?? 3),
+          happiness: (b.carrots ?? 0) * (safeConfig.pointsPerCarrot ?? 3),
         }));
 
         const total = bunnyViews.reduce((sum, b) => sum + b.happiness, 0);
@@ -51,7 +53,7 @@ export class BunnyDashboardComponent {
         return {
           bunnies: bunnyViews,
           averageHappiness: avg,
-          config,
+          config: safeConfig,
         };
       })
     );

@@ -12,14 +12,13 @@ import { Observable } from 'rxjs';
   templateUrl: './config.html',
   styleUrl: './config.scss',
 })
-export class ConfigComponent implements OnInit {
+export class Config implements OnInit {
   config$!: Observable<GlobalConfig>;
   currentValue = 3;
 
   constructor(private configService: ConfigService) {}
 
   ngOnInit() {
-    void this.configService.initIfMissing();
     this.config$ = this.configService.getConfig();
 
     this.config$.subscribe(c => {

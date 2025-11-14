@@ -5,16 +5,8 @@ import { Config } from './pages/config/config';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'bunnies', pathMatch: 'full' },
-
-  // Main page (dashboard)
   { path: 'bunnies', component: BunnyDashboard },
-
-  // Bunny details page
   { path: 'bunnies/:id', component: BunnyDetails },
-
-  // Config page
   { path: 'config', component: Config },
-
-  // Fallback
   { path: '**', redirectTo: 'bunnies' },
 ];

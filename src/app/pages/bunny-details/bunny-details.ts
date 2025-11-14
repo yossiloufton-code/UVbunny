@@ -20,7 +20,7 @@ interface DetailsVM {
   templateUrl: './bunny-details.html',
   styleUrl: './bunny-details.scss',
 })
-export class BunnyDetailsComponent {
+export class BunnyDetails {
   vm$!: Observable<DetailsVM>;
   private bunnyId: string;
 

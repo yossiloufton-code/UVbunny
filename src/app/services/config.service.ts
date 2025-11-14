@@ -9,19 +9,17 @@ export class ConfigService {
 
   constructor(private firestore: Firestore) {
     this.configRef = doc(this.firestore, 'config', 'global');
-  }
 
-  getConfig(): Observable<GlobalConfig> {
-    return docData(this.configRef) as Observable<GlobalConfig>;
-  }
-
-  async initIfMissing() {
-    // Ensure the config document exists (won’t overwrite if already present)
-    await setDoc(
+    // Ensure a default config exists
+    void setDoc(
       this.configRef,
       { pointsPerCarrot: 3 },
       { merge: true }
     );
+  }
+
+  getConfig(): Observable<GlobalConfig> {
+    return docData(this.configRef) as Observable<GlobalConfig>;
   }
 
   updatePointsPerCarrot(points: number) {
