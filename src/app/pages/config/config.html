@@ -1,1 +1,16 @@
-<p>config works!</p>
+<div class="config-card">
+  <h2>Carrot configuration 🥕</h2>
+
+  <label>
+    Happiness points per carrot:
+    <input type="number" [(ngModel)]="currentValue" min="1" />
+  </label>
+
+  <button (click)="onSave()">Save</button>
+
+  <p class="hint">
+    All bunnies’ happiness is calculated as:
+    <code>carrots × pointsPerCarrot</code>, so changing this value
+    affects all bunnies retroactively.
+  </p>
+</div>
