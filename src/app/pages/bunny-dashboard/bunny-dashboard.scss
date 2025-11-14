@@ -1,0 +1,56 @@
+.summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+
+  .add-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+    }
+
+    input {
+      padding: 0.3rem 0.5rem;
+    }
+
+    button {
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+      border: none;
+      background: #10b981;
+      color: white;
+      cursor: pointer;
+    }
+  }
+}
+
+.bunny-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.bunny-card {
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(15, 23, 42, 0.16);
+  }
+
+  h3 {
+    margin-top: 0;
+  }
+}

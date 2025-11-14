@@ -1,1 +1,31 @@
-<p>bunny-dashboard works!</p>
+<div *ngIf="vm$ | async as vm">
+  <section class="summary">
+    <div>
+      <h2>Your bunny family</h2>
+      <p>Average happiness: <strong>{{ vm.averageHappiness | number:'1.0-1' }}</strong></p>
+      <p>Points per carrot: {{ vm.config.pointsPerCarrot }}</p>
+    </div>
+
+    <form (ngSubmit)="addBunny()" class="add-form">
+      <label>
+        Add new bunny:
+        <input type="text" [(ngModel)]="newBunnyName" name="bunnyName" />
+      </label>
+      <button type="submit">Add</button>
+    </form>
+  </section>
+
+  <section class="bunny-grid">
+    <div
+      class="bunny-card"
+      *ngFor="let item of vm.bunnies"
+      (click)="openDetails(item.bunny.id)"
+    >
+      <h3>{{ item.bunny.name }}</h3>
+      <p>Happiness: {{ item.happiness }}</p>
+      <p>Carrots: {{ item.bunny.carrots }}</p>
+    </div>
+
+    <p *ngIf="!vm.bunnies.length">No bunnies yet. Add your first bunny! 🐰</p>
+  </section>
+</div>

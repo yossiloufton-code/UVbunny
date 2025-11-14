@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
   selector: 'app-config',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './config.component.html',
-  styleUrl: './config.component.scss',
+  templateUrl: './config.html',
+  styleUrl: './config.scss',
 })
 export class ConfigComponent implements OnInit {
   config$!: Observable<GlobalConfig>;
