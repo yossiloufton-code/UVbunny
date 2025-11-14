@@ -1,0 +1,17 @@
+.details {
+  max-width: 400px;
+  padding: 1rem;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+
+  button {
+    margin-top: 0.75rem;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    border: none;
+    background: #f97316;
+    color: white;
+    cursor: pointer;
+  }
+}

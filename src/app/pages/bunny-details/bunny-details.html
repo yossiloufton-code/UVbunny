@@ -1,1 +1,13 @@
-<p>bunny-details works!</p>
+<div *ngIf="vm$ | async as vm" class="details">
+  <h2>{{ vm.bunny.name }}</h2>
+
+  <p>
+    Carrots eaten: <strong>{{ vm.bunny.carrots }}</strong><br />
+    Points per carrot: {{ vm.config.pointsPerCarrot }}<br />
+    Happiness: <strong>{{ vm.happiness }}</strong>
+  </p>
+
+  <button (click)="giveCarrot()">
+    Give carrot 🥕 (+{{ vm.config.pointsPerCarrot }} happiness)
+  </button>
+</div>
